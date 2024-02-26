@@ -15,7 +15,6 @@
   <title>PictureIt</title>
 
   <!-- slider stylesheet -->
-  <!-- slider stylesheet -->
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 
@@ -233,76 +232,76 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    var base64_images = [];
-    console.log(base64_images.length)
+    const apiUrl = 'http://127.0.0.1:8097/api/images';
 
-    var titles = [
-      "Title 1",
-      "Title 2",
-      // Add more titles here
-    ];
+    // Fetch data from the Flask API
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // Log API data to console
 
-    var texts = [
-      "Description 1",
-      "Description 2",
-      // Add more descriptions here
-    ];
+        // Assuming base64_images, titles, and texts are populated using data from the API
+        var base64_images = data.base64_images;
+        var titles = data.titles;
+        var texts = data.texts;
 
-    var galleryContainer = $('#gallery_container');
-    var paginationContainer = $('#pagination_container');
+        var galleryContainer = $('#gallery_container');
+        var paginationContainer = $('#pagination_container');
 
-    var itemsPerPage = 4;
-    var numPages = Math.ceil(base64_images.length / itemsPerPage);
+        var itemsPerPage = 4;
+        var numPages = Math.ceil(base64_images.length / itemsPerPage);
 
-    for (let i = 0; i < base64_images.length; i++) {
-      var index = Math.floor(i / itemsPerPage) + 1;
-      if (!$('#page_' + index).length) {
-        paginationContainer.append('<button id="page_' + index + '">' + index + '</button>');
-        $('#page_' + index).on('click', function () {
-          showPage(index);
+        for (let i = 0; i < base64_images.length; i++) {
+          var index = Math.floor(i / itemsPerPage) + 1;
+          if (!$('#page_' + index).length) {
+            paginationContainer.append('<button id="page_' + index + '">' + index + '</button>');
+            $('#page_' + index).on('click', function () {
+              showPage(index);
+            });
+          }
+        }
+
+        function showPage(pageNumber) {
+          galleryContainer.empty();
+          for (let i = (pageNumber - 1) * itemsPerPage; i < pageNumber * itemsPerPage && i < base64_images.length; i++) {
+            galleryContainer.append('<div class="img_box w3-third"><div class="img" id="img_' + i + '" style="background-image: url(' + base64_images[i] + ');"></div></div>');
+            $('#img_' + i).on('click', function () {
+              openLightbox(i);
+            });
+          }
+        }
+
+        function openLightbox(index) {
+          var image_href = base64_images[index];
+          var title = titles[index];
+          var text = texts[index];
+          var lightbox =
+            '<div id="lightbox">' +
+            '<p id="closeLightbox">Click to close</p>' +
+            '<div id="content">' +
+            '<h1 id="lightbox_text"></h1>' +
+            '<div id="lightbox_hold">' +
+            '<img id="lightbox_img" src=' + image_href + ' />' +
+            '<div id="image_overlay">' +
+            '<h3 id="overlay_title">' + title + '</h3>' +
+            '<p id="overlay_text">' + text + '</p>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+
+          $('body').append(lightbox);
+
+          $('#lightbox').show();
+        }
+
+        $(document).on('click', '#lightbox, #closeLightbox', function () {
+          $('#lightbox').hide();
         });
-      }
-    }
 
-    function showPage(pageNumber) {
-      galleryContainer.empty();
-      for (let i = (pageNumber - 1) * itemsPerPage; i < pageNumber * itemsPerPage && i < base64_images.length; i++) {
-        galleryContainer.append('<div class="img_box w3-third"><div class="img" id="img_' + i + '" style="background-image: url(' + base64_images[i] + ');"></div></div>');
-        $('#img_' + i).on('click', function () {
-          openLightbox(i);
-        });
-      }
-    }
-
-    function openLightbox(index) {
-      var image_href = base64_images[index];
-      var title = titles[index];
-      var text = texts[index];
-      var lightbox =
-        '<div id="lightbox">' +
-        '<p id="closeLightbox">Click to close</p>' +
-        '<div id="content">' +
-        '<h1 id="lightbox_text"></h1>' +
-        '<div id="lightbox_hold">' +
-        '<img id="lightbox_img" src=' + image_href + ' />' +
-        '<div id="image_overlay">' +
-        '<h3 id="overlay_title">' + title + '</h3>' +
-        '<p id="overlay_text">' + text + '</p>' +
-        '</div>' +
-        '</div>' +
-        '</div>' +
-        '</div>';
-
-      $('body').append(lightbox);
-
-      $('#lightbox').show();
-    }
-
-    $(document).on('click', '#lightbox, #closeLightbox', function () {
-      $('#lightbox').hide();
-    });
-
-    showPage(1); // Show the first page initially
+        showPage(1); // Show the first page initially
+      })
+      .catch(error => console.error('Error fetching API data:', error));
   </script>
   <!-- footer section -->
 
