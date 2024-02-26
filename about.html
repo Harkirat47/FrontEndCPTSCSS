@@ -15,6 +15,7 @@
   <title>PictureIt</title>
 
   <!-- slider stylesheet -->
+  <!-- slider stylesheet -->
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 
@@ -232,27 +233,26 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    // Update the apiUrl to the correct endpoint
     const apiUrl = 'http://127.0.0.1:8097/api/images';
 
-    // Fetch data from the Flask API
+    // Fetch images from the API
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-        console.log(data); // Log API data to console
+        console.log(data);
+        const base64_images = data.map(item => item.base64); // Assuming 'base64' is the key holding the image data
+        const titles = data.map(item => item.title); // Assuming 'title' is the key holding the image titles
+        const texts = data.map(item => item.description); // Assuming 'description' is the key holding the image descriptions
 
-        // Assuming base64_images, titles, and texts are populated using data from the API
-        var base64_images = data.base64_images;
-        var titles = data.titles;
-        var texts = data.texts;
+        const galleryContainer = $('#gallery_container');
+        const paginationContainer = $('#pagination_container');
 
-        var galleryContainer = $('#gallery_container');
-        var paginationContainer = $('#pagination_container');
-
-        var itemsPerPage = 4;
-        var numPages = Math.ceil(base64_images.length / itemsPerPage);
+        const itemsPerPage = 4;
+        const numPages = Math.ceil(base64_images.length / itemsPerPage);
 
         for (let i = 0; i < base64_images.length; i++) {
-          var index = Math.floor(i / itemsPerPage) + 1;
+          const index = Math.floor(i / itemsPerPage) + 1;
           if (!$('#page_' + index).length) {
             paginationContainer.append('<button id="page_' + index + '">' + index + '</button>');
             $('#page_' + index).on('click', function () {
@@ -272,10 +272,10 @@
         }
 
         function openLightbox(index) {
-          var image_href = base64_images[index];
-          var title = titles[index];
-          var text = texts[index];
-          var lightbox =
+          const image_href = base64_images[index];
+          const title = titles[index];
+          const text = texts[index];
+          const lightbox =
             '<div id="lightbox">' +
             '<p id="closeLightbox">Click to close</p>' +
             '<div id="content">' +
@@ -295,13 +295,9 @@
           $('#lightbox').show();
         }
 
-        $(document).on('click', '#lightbox, #closeLightbox', function () {
-          $('#lightbox').hide();
-        });
-
         showPage(1); // Show the first page initially
       })
-      .catch(error => console.error('Error fetching API data:', error));
+      .catch(error => console.error('Error fetching images:', error));
   </script>
   <!-- footer section -->
 
