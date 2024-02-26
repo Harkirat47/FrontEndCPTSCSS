@@ -237,7 +237,7 @@
     const apiUrl = 'http://127.0.0.1:8097/api/images';
 
     // Fetch images from the API
-    fetch(apiUrl)
+    fetch((apiUrl),  { mode: 'no-cors'})
       .then(response => response.json())
       .then(data => {
         console.log(data);
