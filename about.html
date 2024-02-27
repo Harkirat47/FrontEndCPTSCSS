@@ -233,69 +233,21 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    // Update the apiUrl to the correct endpoint
-    const apiUrl = 'http://127.0.0.1:8097/api/images';
+    // Update the apiUrl to the correct endpoint in your backend server
+    const apiUrl = 'http://127.0.0.1:8107/api/images/'; // Update this URL
 
     // Fetch images from the API
-    fetch((apiUrl),  { mode: 'no-cors'})
+    fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        const base64_images = data.map(item => item.base64); // Assuming 'base64' is the key holding the image data
-        const titles = data.map(item => item.title); // Assuming 'title' is the key holding the image titles
-        const texts = data.map(item => item.description); // Assuming 'description' is the key holding the image descriptions
-
+        const imageData = data.map(item => item.imageData); // Assuming 'imageData' is the key holding the image data
+        
         const galleryContainer = $('#gallery_container');
-        const paginationContainer = $('#pagination_container');
 
-        const itemsPerPage = 4;
-        const numPages = Math.ceil(base64_images.length / itemsPerPage);
-
-        for (let i = 0; i < base64_images.length; i++) {
-          const index = Math.floor(i / itemsPerPage) + 1;
-          if (!$('#page_' + index).length) {
-            paginationContainer.append('<button id="page_' + index + '">' + index + '</button>');
-            $('#page_' + index).on('click', function () {
-              showPage(index);
-            });
-          }
-        }
-
-        function showPage(pageNumber) {
-          galleryContainer.empty();
-          for (let i = (pageNumber - 1) * itemsPerPage; i < pageNumber * itemsPerPage && i < base64_images.length; i++) {
-            galleryContainer.append('<div class="img_box w3-third"><div class="img" id="img_' + i + '" style="background-image: url(' + base64_images[i] + ');"></div></div>');
-            $('#img_' + i).on('click', function () {
-              openLightbox(i);
-            });
-          }
-        }
-
-        function openLightbox(index) {
-          const image_href = base64_images[index];
-          const title = titles[index];
-          const text = texts[index];
-          const lightbox =
-            '<div id="lightbox">' +
-            '<p id="closeLightbox">Click to close</p>' +
-            '<div id="content">' +
-            '<h1 id="lightbox_text"></h1>' +
-            '<div id="lightbox_hold">' +
-            '<img id="lightbox_img" src=' + image_href + ' />' +
-            '<div id="image_overlay">' +
-            '<h3 id="overlay_title">' + title + '</h3>' +
-            '<p id="overlay_text">' + text + '</p>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>';
-
-          $('body').append(lightbox);
-
-          $('#lightbox').show();
-        }
-
-        showPage(1); // Show the first page initially
+        imageData.forEach(base64Image => {
+          galleryContainer.append(`<img src="data:image/jpeg;base64,${base64Image}" class="img" />`);
+        });
       })
       .catch(error => console.error('Error fetching images:', error));
   </script>
@@ -330,3 +282,5 @@
 </body>
 
 </html>
+
+
