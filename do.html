@@ -71,7 +71,8 @@
           <a class="navbar-brand" href="index.html">
             <span>PictureIt</span>
           </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
@@ -121,6 +122,8 @@
       <input type="range" id="brush_size_slider" class="editor_button" min="1" max="50" title="Brush Size">
       <button class="editor_button" id="upload_image_button">Upload Image</button>
       <button class="editor_button" id="download_button">Download</button>
+      <button class="editor_button" id="add_shape_button">Add Shape</button>
+
     </div>
   </div>
   <!-- End Editor Section -->
@@ -181,20 +184,20 @@
     }
 
     function draw(e) {
-  if (!isDrawing) return;
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-  if (isPaintMode) {
-    ctx.fillStyle = drawColor;
-    ctx.beginPath();
-    ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2); // Draw a circle at the current mouse position
-    ctx.fill();
-  } else {
-    drawShape(x, y); // Draw shapes as before if paint mode is off
-  }
-}
+      if (isPaintMode) {
+        ctx.fillStyle = drawColor;
+        ctx.beginPath();
+        ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2); // Draw a circle at the current mouse position
+        ctx.fill();
+      } else {
+        drawShape(x, y); // Draw shapes as before if paint mode is off
+      }
+    }
 
 
 
@@ -252,6 +255,109 @@
       link.href = canvas.toDataURL();
       link.click();
     }
+    // Function to add shapes to the canvas
+    // Function to add shapes to the canvas
+    function addShape(shapeType) {
+      if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const size = 50; // Default size of the shape
+
+      ctx.beginPath();
+
+      if (shapeType === 'circle') {
+        ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+      } else if (shapeType === 'square') {
+        ctx.rect(x - size / 2, y - size / 2, size, size);
+      } else if (shapeType === 'triangle') {
+        ctx.moveTo(x, y - size / 2);
+        ctx.lineTo(x + size / 2, y + size / 2);
+        ctx.lineTo(x - size / 2, y + size / 2);
+        ctx.closePath();
+      }
+
+      ctx.fillStyle = drawColor;
+      ctx.fill();
+
+      // Add event listener for keydown to enable resizing and moving
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Tab') {
+          const newSize = parseInt(prompt('Enter new size for the shape:'));
+          if (!isNaN(newSize)) {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Redraw all shapes with updated size
+            drawHistory.forEach(function (dataUrl) {
+              const img = new Image();
+              img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+              };
+              img.src = dataUrl;
+            });
+
+            // Redraw the clicked shape with the new size
+            ctx.beginPath();
+            if (shapeType === 'circle') {
+              ctx.arc(x, y, newSize / 2, 0, Math.PI * 2);
+            } else if (shapeType === 'square') {
+              ctx.rect(x - newSize / 2, y - newSize / 2, newSize, newSize);
+            } else if (shapeType === 'triangle') {
+              ctx.moveTo(x, y - newSize / 2);
+              ctx.lineTo(x + newSize / 2, y + newSize / 2);
+              ctx.lineTo(x - newSize / 2, y + newSize / 2);
+              ctx.closePath();
+            }
+            ctx.fillStyle = drawColor;
+            ctx.fill();
+          }
+        } else if (e.key === 'p') {
+          const newX = parseInt(prompt('Enter new X position for the shape:'));
+          const newY = parseInt(prompt('Enter new Y position for the shape:'));
+          if (!isNaN(newX) && !isNaN(newY)) {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Redraw all shapes with updated position
+            drawHistory.forEach(function (dataUrl) {
+              const img = new Image();
+              img.onload = function () {
+                ctx.drawImage(img, newX, newY); // Adjusting position
+              };
+              img.src = dataUrl;
+            });
+
+            // Redraw the clicked shape with the new position
+            ctx.beginPath();
+            if (shapeType === 'circle') {
+              ctx.arc(newX, newY, size / 2, 0, Math.PI * 2);
+            } else if (shapeType === 'square') {
+              ctx.rect(newX - size / 2, newY - size / 2, size, size);
+            } else if (shapeType === 'triangle') {
+              ctx.moveTo(newX, newY - size / 2);
+              ctx.lineTo(newX + size / 2, newY + size / 2);
+              ctx.lineTo(newX - size / 2, newY + size / 2);
+              ctx.closePath();
+            }
+            ctx.fillStyle = drawColor;
+            ctx.fill();
+          }
+        }
+      });
+    }
+
+    // Example of adding a shape when the button is clicked
+    document.getElementById("add_shape_button").addEventListener("click", function () {
+      const shapeType = prompt('Enter shape type (circle, square, triangle):');
+      if (shapeType && ['circle', 'square', 'triangle'].includes(shapeType.toLowerCase())) {
+        addShape(shapeType.toLowerCase());
+      } else {
+        alert('Invalid shape type!');
+      }
+    });
+
   </script>
 </body>
 
