@@ -37,7 +37,7 @@
       margin: 0 10%;
     }
 
-    
+
 
     .img_hold {
       height: 256px;
@@ -250,7 +250,7 @@
         imageData.forEach(base64Image => {
           var image = new Image();
 
-          image.setAttribute("src", "data:image/jpeg;base64," + base64Image.substring(20));
+          image.setAttribute("src", "data:image/jpeg;base64," + base64Image.substring(0));
           galleryContainer.append(image);
           // galleryContainer.append(`<img src="data:image/jpeg;base64,${base64Image}" class="img" />`);
         });
