@@ -37,6 +37,8 @@
       margin: 0 10%;
     }
 
+    
+
     .img_hold {
       height: 256px;
       width: 100%;
@@ -246,7 +248,11 @@
         const galleryContainer = $('#gallery_container');
 
         imageData.forEach(base64Image => {
-          galleryContainer.append(`<img src="data:image/jpeg;base64,${base64Image}" class="img" />`);
+          var image = new Image();
+
+          image.setAttribute("src", "data:image/jpeg;base64," + base64Image.substring(20));
+          galleryContainer.append(image);
+          // galleryContainer.append(`<img src="data:image/jpeg;base64,${base64Image}" class="img" />`);
         });
       })
       .catch(error => console.error('Error fetching images:', error));
