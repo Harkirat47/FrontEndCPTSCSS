@@ -167,7 +167,7 @@
         body: JSON.stringify({ name, uid, password, dob })
       };
 
-      fetch('http://127.0.0.1:8086/api/users/signup', requestOptions)
+      fetch('http://127.0.0.1:8097/api/users/signup', requestOptions)
         .then(response => {
           if (response.ok) {
             console.log("Successfully signed up");
