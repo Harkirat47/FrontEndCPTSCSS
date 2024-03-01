@@ -14,11 +14,6 @@
 
   <title>PictureIt</title>
 
-  <!-- slider stylesheet -->
-  <!-- slider stylesheet -->
-  <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
@@ -30,9 +25,7 @@
   <link href="css/responsive.css" rel="stylesheet" />
   <style>
     /* Style for demonstration purposes */
-    /* Style for demonstration purposes */
     body {
-      
       margin: 0;
       padding: 0;
     }
@@ -132,15 +125,47 @@
   </section>
 
   <script>
-    
     function handleFiles(files) {
+      // const myHeaders = new Headers();
+      // myHeaders.append("Content-Type", "application/json");
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         if (file.type.match('image.*')) {
           const reader = new FileReader();
           reader.onload = function (event) {
+            const fileName = file.name;
             const base64String = event.target.result.split(',')[1];
             console.log(base64String); // Log base64 representation
+            
+            // Send base64String to server
+            fetch('http://localhost:8097/api/images/upload', {
+              method: 'POST',
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ 
+                base64_string : base64String,
+                name: fileName, 
+              })
+            })
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error('Upload failed');
+              }
+            })
+            .then(data => {
+              // Handle successful upload
+              console.log(data);
+              alert('Image uploaded successfully');
+            })
+            .catch(error => {
+              // Handle errors
+              console.error(error);
+              alert('Upload failed. Please try again.');
+            });
           };
           reader.readAsDataURL(file);
         } else {
@@ -148,43 +173,13 @@
         }
       }
     }
-
-
   </script>
-
-
-  <!-- work section -->
-
-
-
-  <!-- footer section -->
 
   <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-  </script>
-  <!-- owl carousel script 
-    -->
-  <script type="text/javascript">
-    $(".owl-carousel").owlCarousel({
-      loop: true,
-      margin: 0,
-      navText: [],
-      center: true,
-      autoplay: true,
-      autoplayHoverPause: true,
-      responsive: {
-        0: {
-          items: 1
-        },
-        1000: {
-          items: 3
-        }
-      }
-    });
-  </script>
-  <!-- end owl carousel script -->
 
 </body>
 
 </html>
+
+
