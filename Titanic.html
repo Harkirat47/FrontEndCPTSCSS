@@ -225,5 +225,31 @@ body {
       <button type="submit">Submit</button>
     </form>
 </div>
-  </body>
+<script>
+  document.getElementById("passengerForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+      const formData = new FormData(event.target);
+      const passengerData = {};
+
+      formData.forEach(function(value, key){
+        if (!isNaN(parseInt(value))) {
+            passengerData[key] = parseInt(value);
+        } else if (!isNaN(parseFloat(value))) {
+            passengerData[key] = parseFloat(value);
+        } else if (value.toLowerCase() === "true" || value.toLowerCase() === "false") {
+            passengerData[key] = value.toLowerCase() === "true"; // boolean
+        } else if (value.toLowerCase() === "southampton") {
+            passengerData[key] = "S";
+        } else if (value.toLowerCase() === "queenstown") {
+          passengerData[key] = "Q";
+        } else if (value.toLowerCase() === "cherbourg") {
+          passengerData[key] = "C";
+        } else {
+            passengerData[key] = value; 
+        }
+    });
+    console.log(passengerData)
+  });
+</script>
+</body>
 </html>
