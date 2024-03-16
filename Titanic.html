@@ -2,7 +2,7 @@
 <html>
 <head>
     <style>
-        html {
+        html, body {
   height: 100%;
 }
 body {
@@ -10,6 +10,7 @@ body {
   padding:0;
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
+  overflow-y: auto;
 }
 
 .login-box {
@@ -23,10 +24,12 @@ body {
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 10px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .login-box h2 {
-  margin: 0 0 30px;
+  margin: 0 0 5px;
   padding: 0;
   color: #fff;
   text-align: center;
@@ -34,6 +37,7 @@ body {
 
 .login-box .user-box {
   position: relative;
+  margin-bottom: 10px;
 }
 
 .login-box .user-box input {
@@ -172,37 +176,54 @@ body {
     </style>
 </head>
 <body>
-<div class="login-box">
-    <h2>Titanic</h2>
-    <form>
+  <div class="login-box">
+    <h2>Titanic: Will you survive?</h2>
+    <form id="passengerForm">
       <div class="user-box">
-        <input type="text" name="" required="">
+        <input type="text" name="name" required>
         <label>Name</label>
       </div>
       <div class="user-box">
-        <input name="" required="">
+        <input type="text" name="sex" required>
         <label>Gender</label>
       </div>
       <div class="user-box">
-        <input type="text" name="" required="">
+        <input type="text" name="age" required>
         <label>Age</label>
       </div>
       <div class="user-box">
-        <input  name="" required="">
+        <input type="text" name="pclass" required>
         <label>Class of Travel</label>
       </div>
       <div class="user-box">
-        <input type="text" name="" required="">
-        <label>How Many Traveling?</label>
+        <input type="text" name="sibsp" required>
+        <label>Number of Siblings/Spouses Aboard</label>
       </div>
-      <a href="#">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Submit
-      </a>
+      <div class="user-box">
+        <input type="text" name="parch" required>
+        <label>Number of Parents/Children Aboard</label>
+      </div>
+      <div class="user-box">
+        <input type="text" name="fare" required>
+        <label>Fare</label>
+      </div>
+      <div class="user-box">
+        <select name="embarked" required>
+            <option value="" disabled selected>Port of Embarkation</option>
+            <option value="Cherbourg">Cherbourg</option>
+            <option value="Southampton">Southampton</option>
+            <option value="Queenstown">Queenstown</option>
+        </select>
+      </div>
+      <div class="user-box">
+        <select name="alone" required>
+            <option value="" disabled selected>Alone?</option>
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+      </div>
+      <button type="submit">Submit</button>
     </form>
-  </div>
+</div>
   </body>
 </html>
