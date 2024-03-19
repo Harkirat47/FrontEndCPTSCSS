@@ -26,12 +26,12 @@
       border-radius: 10px;
       height: 100%;
       overflow-y: auto;
+      text-align: center;
     }
     .login-box h2 {
       margin: 0 0 5px;
       padding: 0;
       color: #fff;
-      text-align: center;
     }
     .login-box .user-box {
       position: relative;
@@ -176,6 +176,31 @@
       </div>
       <!-- End of image upload input field -->
     </form>
+    <div id="image-display"></div> <!-- Placeholder for displaying images -->
   </div>
-</body>
-</html>
+
+  <script>
+    document.getElementById("image").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+      const formData = new FormData(event.target);
+      const imageData = formData.get('image');
+
+      // Create FormData object
+      const imageDataFormData = new FormData();
+      imageDataFormData.append('image', imageData);
+
+      // Perform fetch request
+      fetch('http://127.0.0.1:8086/api/titanic', {
+        method: 'POST',
+        body: imageDataFormData
+      })
+      .then(response => response.json())
+      .then(data => {
+        displayImages(data); // Call method to display images
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+
+    
