@@ -233,23 +233,37 @@ body {
 
       formData.forEach(function(value, key){
         if (!isNaN(parseInt(value))) {
-            passengerData[key] = parseInt(value);
+            passengerData[key] = [parseInt(value)];
         } else if (!isNaN(parseFloat(value))) {
-            passengerData[key] = parseFloat(value);
+            passengerData[key] = [parseFloat(value)];
         } else if (value.toLowerCase() === "true" || value.toLowerCase() === "false") {
             passengerData[key] = value.toLowerCase() === "true"; // boolean
         } else if (value.toLowerCase() === "southampton") {
-            passengerData[key] = "S";
+            passengerData[key] = ["S"];
         } else if (value.toLowerCase() === "queenstown") {
-          passengerData[key] = "Q";
+          passengerData[key] = ["Q"];
         } else if (value.toLowerCase() === "cherbourg") {
-          passengerData[key] = "C";
+          passengerData[key] = ["C"];
         } else {
-            passengerData[key] = value; 
+            passengerData[key] = [value]; 
         }
+        console.log(passengerData)
     });
-    console.log(passengerData)
-  });
+    fetch('http://127.0.0.1:8086/api/titanic', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(passengerData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data); // Handle response from backend
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
 </script>
 </body>
 </html>
