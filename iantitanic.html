@@ -340,6 +340,10 @@
       Survival Chance:
       
     </p>
+    <p id="display2">
+        Deathrate:
+        
+      </p>
 </form>
 
 <script>
@@ -383,8 +387,9 @@
       .then(data => {
           // Now 'data' contains the parsed JSON content
           console.log(data);
-          document.getElementById("display").innerHTML = "Survival Chance: " + data[0] * 100 + "%.";
-      })
+          document.getElementById("display").innerHTML = "Survival Chance: " + (data[0] * 100).toFixed(2) + "%.";
+          document.getElementById("display2").innerHTML = "Deathrate: " + ((1 - data[0]) * 100).toFixed(2) + "%.";
+        })
       .catch(error => {
           // Handle errors here
           console.error('There was a problem with the fetch operation:', error);
