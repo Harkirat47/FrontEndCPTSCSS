@@ -17,14 +17,14 @@
       position: absolute;
       top: 50%;
       left: 50%;
+      transform: translate(-50%, -50%);
       width: 400px;
       padding: 40px;
-      transform: translate(-50%, -50%);
       background: rgba(0,0,0,.5);
       box-sizing: border-box;
       box-shadow: 0 15px 25px rgba(0,0,0,.6);
       border-radius: 10px;
-      height: 100%;
+      height: auto;
       overflow-y: auto;
       text-align: center;
     }
@@ -76,7 +76,7 @@
       overflow: hidden;
       transition: .5s;
       margin-top: 40px;
-      letter-spacing: 4px
+      letter-spacing: 4px;
     }
     .login-box a:hover {
       background: #03e9f4;
@@ -114,7 +114,7 @@
       height: 100%;
       background: linear-gradient(180deg, transparent, #03e9f4);
       animation: btn-anim2 1s linear infinite;
-      animation-delay: .25s
+      animation-delay: .25s;
     }
     @keyframes btn-anim2 {
       0% {
@@ -131,7 +131,7 @@
       height: 2px;
       background: linear-gradient(270deg, transparent, #03e9f4);
       animation: btn-anim3 1s linear infinite;
-      animation-delay: .5s
+      animation-delay: .5s;
     }
     @keyframes btn-anim3 {
       0% {
@@ -148,7 +148,7 @@
       height: 100%;
       background: linear-gradient(360deg, transparent, #03e9f4);
       animation: btn-anim4 1s linear infinite;
-      animation-delay: .75s
+      animation-delay: .75s;
     }
     @keyframes btn-anim4 {
       0% {
@@ -168,31 +168,29 @@
 <body>
   <div class="login-box">
     <h2>Input an Image</h2>
-    <form id="image">
+    <form id="image-form">
       <!-- Add image upload input field -->
       <div class="user-box">
         <input type="file" name="image" id="image-input" accept="image/*">
         <label for="image-input">Upload Image</label>
       </div>
       <!-- End of image upload input field -->
+      <button type="submit">Submit</button>
     </form>
     <div id="image-display"></div> <!-- Placeholder for displaying images -->
   </div>
 
   <script>
-    document.getElementById("image").addEventListener("submit", function(event) {
+    document.getElementById("image-form").addEventListener("submit", function(event) {
       event.preventDefault(); // Prevent default form submission
-      const formData = new FormData(event.target);
-      const imageData = formData.get('image');
-
-      // Create FormData object
-      const imageDataFormData = new FormData();
-      imageDataFormData.append('image', imageData);
+      const formData = new FormData();
+      const fileInput = document.getElementById('image-input');
+      formData.append('image', fileInput.files[0]);
 
       // Perform fetch request
       fetch('http://127.0.0.1:8086/api/titanic', {
         method: 'POST',
-        body: imageDataFormData
+        body: formData
       })
       .then(response => response.json())
       .then(data => {
@@ -203,4 +201,11 @@
       });
     });
 
-    
+    // Function to display images
+    function displayImages(images) {
+      const imageDisplay = document.getElementById("image-display");
+      imageDisplay.innerHTML = ""; // Clear previous images
+
+      images.forEach(imageSrc => {
+        const img = document.createElement("img");
+        img.src
