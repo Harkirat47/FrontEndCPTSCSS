@@ -171,7 +171,7 @@
     <form id="image-form">
       <!-- Add image upload input field -->
       <div class="user-box">
-        <input type="file" name="image" id="image-input" accept="image/*">
+        <input type="file" name="image" id="image-input" accept="image/*" onchange="displaySelectedImage(event)">
         <label for="image-input">Upload Image</label>
       </div>
       <!-- End of image upload input field -->
@@ -181,31 +181,20 @@
   </div>
 
   <script>
-    document.getElementById("image-form").addEventListener("submit", function(event) {
-      event.preventDefault(); // Prevent default form submission
-      const formData = new FormData();
-      const fileInput = document.getElementById('image-input');
-      formData.append('image', fileInput.files[0]);
-
-      // Perform fetch request
-      fetch('http://127.0.0.1:8086/api/titanic', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        displayImages(data); // Call method to display images
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    });
-
-    // Function to display images
-    function displayImages(images) {
+    function displaySelectedImage(event) {
       const imageDisplay = document.getElementById("image-display");
-      imageDisplay.innerHTML = ""; // Clear previous images
-
-      images.forEach(imageSrc => {
-        const img = document.createElement("img");
-        img.src
+      imageDisplay.innerHTML = ""; // Clear previous image
+      
+      const file = event.target.files[0];
+      const imageURL = URL.createObjectURL(file);
+      
+      const img = document.createElement("img");
+      img.src = imageURL;
+      img.style.maxWidth = "100%";
+      img.style.height = "auto";
+      
+      imageDisplay.appendChild(img);
+    }
+  </script>
+</body>
+</html>
