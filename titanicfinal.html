@@ -29,6 +29,12 @@
   <link href="css/responsive.css" rel="stylesheet" />
   <style>
         /* Center-align the form */
+        body {
+          background-image: url('titanicimage.png');
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-attachment: fixed; /* Ensures the background image remains fixed as the page is scrolled */
+        }
         form {
           text-align: center;
           margin: 0 auto;
@@ -293,54 +299,54 @@
   </div>
 
   <form action="javascript:login_user()">
-    <h2>Titanic: Will you survive?</h2>
-    <p><label>
+    <h2 style="color: white;">Titanic: Will you survive?</h2>
+    <p><label style="color: white;">
         Name:
-        <input type="text" name="name" id="name" required="" />
+        <input type="text" name="name" id="name" required="" style="color: white;" />
     </label></p>
-    <p><label>
+    <p><label style="color: white;">
         Class:
-        <select id="pclass" name="pclass">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
+        <select id="pclass" name="pclass" style="color: white;">
+          <option value="1" style="color: black;">1</option>
+          <option value="2" style="color: black;">2</option>
+          <option value="3" style="color: black;">3</option>
         </select>
     </label></p>
-    <p><label>
+    <p><label style="color: white;">
         Sex:
-        <select id="sex" name="sex">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
+        <select id="sex" name="sex" style="color: white;">
+          <option value="male" style="color: black;">Male</option>
+          <option value="female" style="color: black;">Female</option>
         </select>
     </label></p>
-    <p><label>
+    <p><label style="color: white;">
         Age:
-        <input type="text" name="age" id="age" required="" />
+        <input type="text" name="age" id="age" required="" style="color: white;" />
     </label></p>
-    <p><label>
+    <p><label style="color: white;">
         Family Members:
-        <input type="text" name="fmem" id="fmem" required="" />
-    </label></p>
-    <p><label>
+        <input type="text" name="fmem" id="fmem" required="" style="color: white;" />
+    </label style="color: white;"></p>
+    <p><label style="color: white;">
         Fare:
-        <input type="text" name="fare" id="fare" required="" />
+        <input type="text" name="fare" id="fare" required="" style="color: white;" />
     </label></p>
-    <p><label>
+    <p><label style="color: white;">
         Embarkment Port:
-        <select id="embark" name="embark">
-          <option value="S">Southampton</option>
-          <option value="Q">Queenstown</option>
-          <option value="C">Cherbourg</option>
+        <select id="embark" name="embark" style="color: white;">
+          <option value="S" style="color: black;">Southampton</option>
+          <option value="Q" style="color: black;">Queenstown</option>
+          <option value="C" style="color: black;">Cherbourg</option>
         </select>
     </label></p>
     <p>
-        <button>Go!</button>
+        <button style="color: white;">Go!</button>
     </p>
-    <p id="display">
+    <p id="display" style="color: white;">
       Survival Chance:
       
     </p>
-    <p id="display2">
+    <p id="display2" style="color: white;">
         Deathrate:
         
       </p>
@@ -387,8 +393,8 @@
       .then(data => {
           // Now 'data' contains the parsed JSON content
           console.log(data);
-          document.getElementById("display").innerHTML = "Survival Chance: " + (data[0] * 100).toFixed(2) + "%.";
-          document.getElementById("display2").innerHTML = "Deathrate: " + ((1 - data[0]) * 100).toFixed(2) + "%.";
+          document.getElementById("display").innerHTML = "Survival Chance: " + ((1-data[0]) * 100).toFixed(2) + "%.";
+          document.getElementById("display2").innerHTML = "Deathrate: " + (data[0] * 100).toFixed(2) + "%.";
         })
       .catch(error => {
           // Handle errors here
