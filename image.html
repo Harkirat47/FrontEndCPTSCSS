@@ -181,6 +181,54 @@
   </div>
 
   <script>
+    function fetchImages(){
+        const url = 'http://127.0.0.1:8086/api/';
+
+// Set the body of the request to include login data from the DOM
+const body = {
+    name: document.getElementById("name").value,
+    pclass: parseInt(document.getElementById("pclass").value),
+    sex: document.getElementById("sex").value,
+    age: parseInt(document.getElementById("age").value),
+    fmem: parseInt(document.getElementById("fmem").value),
+    fare: parseInt(document.getElementById("fare").value),
+    embark: parseInt(document.getElementById("embark").value),
+};
+
+// Change options according to Authentication requirements
+const authOptions = {
+    mode: 'cors', // no-cors, *cors, same-origin
+    credentials: 'include', // include, same-origin, omit
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    method: 'POST', // Override the method property
+    cache: 'no-cache', // Set the cache property
+    body: JSON.stringify(body)
+};
+
+// Fetch JWT
+fetch(url, authOptions)
+.then(response => {
+    // Check if response is successful
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    // Parse the JSON content from the response
+    return response.json();
+})
+.then(data => {
+    // Now 'data' contains the parsed JSON content
+    console.log(data);
+    document.getElementById("display").innerHTML = "Survival Chance: " + (data[0] * 100).toFixed(2) + "%.";
+    document.getElementById("display2").innerHTML = "Deathrate: " + ((1 - data[0]) * 100).toFixed(2) + "%.";
+  })
+.catch(error => {
+    // Handle errors here
+    console.error('There was a problem with the fetch operation:', error);
+});
+    }
+
     function displaySelectedImage(event) {
       const imageDisplay = document.getElementById("image-display");
       imageDisplay.innerHTML = ""; // Clear previous image
