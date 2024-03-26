@@ -151,6 +151,47 @@
                 bottom: 100%;
             }
         }
+        #resultContainer {
+            margin-top: 40px; /* Adjust margin as needed */
+            text-align: center; /* Center align the result */
+            color: #fff; /* Match text color to theme */
+        }
+
+        #resultContainer h2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        #resultContainer p {
+            font-size: 20px; /* Adjust font size as needed */
+        }
+
+        /* Button styles */
+        #downloadButton {
+            display: block;
+            margin-top: 20px; /* Adjust margin as needed */
+            padding: 10px 20px;
+            color: #afaaff;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 2px solid #afaaff;
+            border-radius: 5px;
+            background: none;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #downloadButton:hover {
+            background-color: #afaaff;
+            color: #fff;
+        }
+
+        /* Image styles */
+        #inputImage {
+            max-width: 100%; /* Ensure image fits within container */
+            margin-top: 20px; /* Adjust margin as needed */
+        }
     </style>
 </head>
 <body>
@@ -174,7 +215,8 @@
       <div id="resultContainer" style="display: none;">
         <h2>Prediction Result:</h2>
         <p id="predictionResult"></p>
-      </div>
+        <a id="downloadButton" href="#" download="image.jpg">Download Image</a>
+    </div>
 
       <script>
         document.getElementById('submitButton').addEventListener('click', function(event) {
@@ -190,12 +232,12 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ image_url: imageUrl })
+                body: JSON.stringify({ image_data: imageUrl })
             })
             .then(response => response.json())
             .then(data => {
-
-                displayPrediction(data.name);
+                console.log(data.predictions);
+                displayPrediction(data.predictions);
             })
             .catch(error => {
                 console.error('Error fetching prediction:', error);
